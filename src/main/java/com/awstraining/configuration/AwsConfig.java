@@ -3,6 +3,8 @@ package com.awstraining.configuration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -19,12 +21,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class AwsConfig {
 
-    AWSCredentials credentials = DefaultAWSCredentialsProviderChain.getInstance().getCredentials();
+    AWSStaticCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(DefaultAWSCredentialsProviderChain.getInstance().getCredentials());
 
     @Bean
     public AmazonS3 amazonS3Client() {
         return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withCredentials(credentialsProvider)
                 .build();
     }
 
@@ -39,7 +41,7 @@ public class AwsConfig {
     public AmazonSNS snsClient(){
         return AmazonSNSClient
                 .builder()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withCredentials(credentialsProvider)
                 .build();
     }
 
@@ -47,7 +49,14 @@ public class AwsConfig {
     public AmazonSQS sqsClient(){
         return AmazonSQSClient
                 .builder()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withCredentials(credentialsProvider)
+                .build();
+    }
+
+    @Bean
+    public AWSLambda awsLambda() {
+        return AWSLambdaClientBuilder.standard()
+                .withCredentials(credentialsProvider)
                 .build();
     }
 }
