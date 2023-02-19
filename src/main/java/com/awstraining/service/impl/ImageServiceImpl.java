@@ -79,7 +79,7 @@ public class ImageServiceImpl implements ImageService {
                 .lastUpdateDate(LocalDateTime.now())
                 .build();
             imageRepository.saveAndFlush(imageModel);
-//            notificationService.sendMessageToQueue(createMessage(imageModel));
+            notificationService.sendMessageToQueue(createMessage(imageModel));
         } catch (IOException | InterruptedException e) {
             deleteByName(multipartFile.getOriginalFilename());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);

@@ -6,8 +6,7 @@
 
     <groupId>com.aws-training</groupId>
     <artifactId>lambda-sqs-db</artifactId>
-<!--    <version>1</version>-->
-    <version>0.1</version>
+    <version>1</version>
     <packaging>jar</packaging>
     <name>AwsTraining Lambda App</name>
 
